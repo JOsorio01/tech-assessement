@@ -1,0 +1,475 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/show/:
+    get:
+      operationId: show_list
+      tags:
+      - show
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Show'
+          description: ''
+    post:
+      operationId: show_create
+      tags:
+      - show
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Show'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Show'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Show'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+          description: ''
+  /api/show/{id}/:
+    get:
+      operationId: show_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this show.
+        required: true
+      tags:
+      - show
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+          description: ''
+    put:
+      operationId: show_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this show.
+        required: true
+      tags:
+      - show
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Show'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Show'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Show'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+          description: ''
+    patch:
+      operationId: show_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this show.
+        required: true
+      tags:
+      - show
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedShow'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedShow'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedShow'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+          description: ''
+    delete:
+      operationId: show_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this show.
+        required: true
+      tags:
+      - show
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/upload-file/:
+    post:
+      operationId: upload_file_create
+      tags:
+      - upload-file
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Actor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        actor_name:
+          type: string
+          maxLength: 255
+      required:
+      - actor_name
+      - id
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category_name:
+          type: string
+          maxLength: 255
+      required:
+      - category_name
+      - id
+    Country:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        country_name:
+          type: string
+          maxLength: 255
+      required:
+      - country_name
+      - id
+    Director:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        director_name:
+          type: string
+          maxLength: 255
+      required:
+      - director_name
+      - id
+    PatchedShow:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 255
+        date_added:
+          type: string
+          format: date
+        release_year:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration_type:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        show_type:
+          type: string
+          maxLength: 255
+        directors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Director'
+        cast:
+          type: array
+          items:
+            $ref: '#/components/schemas/Actor'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        country:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+        rating:
+          $ref: '#/components/schemas/Rating'
+    Rating:
+      type: object
+      properties:
+        rating:
+          type: string
+          maxLength: 10
+      required:
+      - rating
+    Show:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 255
+        date_added:
+          type: string
+          format: date
+        release_year:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration_type:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        show_type:
+          type: string
+          maxLength: 255
+        directors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Director'
+        cast:
+          type: array
+          items:
+            $ref: '#/components/schemas/Actor'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        country:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+        rating:
+          $ref: '#/components/schemas/Rating'
+      required:
+      - date_added
+      - description
+      - duration
+      - duration_type
+      - release_year
+      - show_type
+      - title
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
