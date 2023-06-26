@@ -112,7 +112,7 @@ def process_and_save_data(data: List) -> None:
 @api_view(['POST'])
 def upload_file(request):
     request_file = request.data.get("file", None)
-    file_data = load_file_and_return_dataframe(request_file).head(10)
+    file_data = load_file_and_return_dataframe(request_file)
     if file_data is not None:
         data: List = file_data.to_dict(orient='records')
 
