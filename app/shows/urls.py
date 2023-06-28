@@ -5,7 +5,10 @@ from shows import views
 
 
 router = DefaultRouter()
-router.register("show", views.ShowViewSet)
+router.register("shows", views.ShowViewSet)
+router.register("directors", views.DirectorViewSet)
+router.register("actors", views.ActorViewSet)
+router.register("categories", views.CategoryViewSet)
 
 app_name = "show"
 

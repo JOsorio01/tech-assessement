@@ -48,12 +48,20 @@ class NamesMatch(models.Model):
     db_name = models.CharField(max_length=255)
     match_name = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.db_name
+
 
 class FileTemplate(models.Model):
     template_name = models.CharField(max_length=255)
     match_names = models.ManyToManyField('NamesMatch')
     ignore_fields = models.ManyToManyField(
         'NamesMatch',
-        related_name='ignored'
+        related_name='ignored',
+        null=True,
+        blank=True,
     )
     active = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.template_name

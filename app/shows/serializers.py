@@ -52,7 +52,7 @@ class ShowSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Show
         fields = [
-            "title", "date_added", "release_year", "duration",
+            "id", "title", "date_added", "release_year", "duration",
             "duration_type", "description", "show_type", "directors",
             "cast", "categories", "country", "rating"
         ]

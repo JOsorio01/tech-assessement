@@ -48,8 +48,17 @@ def load_file_and_return_dataframe(data) -> pd.DataFrame | None:
 def get_mapped_data(field: str, data: dict) -> Any | None:
     active_template = FileTemplate.objects.filter(active=True)
     if active_template.exists():
-        # TODO Logic to use a saved template
-        pass
+        try:
+            db_name = active_template.first().match_names.get(
+                db_name=field
+            )
+            value = data.get(db_name.match_name, None)
+            if field == "duration":
+                return value.split(" ")
+            return value
+        except Exception as e:
+            print(str(e))
+            return None
     else:
         value = data[DEFAULT_FIELD_MAPPER.get(field, None)]
         if field == "duration":
@@ -73,7 +82,7 @@ def process_and_save_data(data: List) -> None:
         directors_data = directors_data.split(",") if directors_data else []
         for director in directors_data:
             director_obj, _ = Director.objects.get_or_create(
-                director_name=director.title()
+                director_name=director.title().strip()
             )
             show.directors.add(director_obj)
 
@@ -81,7 +90,7 @@ def process_and_save_data(data: List) -> None:
         cast_data = cast_data.split(",") if cast_data else []
         for cast in cast_data:
             cast_obj, _ = Actor.objects.get_or_create(
-                actor_name=cast.title()
+                actor_name=cast.title().strip()
             )
             show.cast.add(cast_obj)
 
@@ -89,7 +98,7 @@ def process_and_save_data(data: List) -> None:
         country_data = country_data.split(",") if country_data else []
         for country in country_data:
             country_obj, _ = Country.objects.get_or_create(
-                country_name=country.title()
+                country_name=country.title().strip()
             )
             show.country.add(country_obj)
 
@@ -97,7 +106,7 @@ def process_and_save_data(data: List) -> None:
         categories_data = categories_data.split(",") if categories_data else []
         for categories in categories_data:
             categories_obj, _ = Category.objects.get_or_create(
-                category_name=categories.title()
+                category_name=categories.title().strip()
             )
             show.categories.add(categories_obj)
 
@@ -115,8 +124,14 @@ def upload_file(request):
     file_data = load_file_and_return_dataframe(request_file)
     if file_data is not None:
         data: List = file_data.to_dict(orient='records')
-
-        process_and_save_data(data)
+        try:
+            process_and_save_data(data)
+        except Exception as e:
+            print(str(e))
+            return Response(
+                {"message": "Something went wrong"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         return Response({"message": "Successful"}, status=status.HTTP_201_CREATED)
     else:
